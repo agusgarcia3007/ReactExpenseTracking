@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Error from './Error';
 
 
-const Budget= () => {
+const Budget= ({ setBudget, setRemaining}) => {
 
     const [amount, setAmount] = useState(0);
     const [error, setError] = useState(false)
@@ -10,7 +10,7 @@ const Budget= () => {
 
     //add Budget
     const addBudget = e => {
-        e.PreventDefault();
+        // e.PreventDefault();
 
 
         //Validation
@@ -21,16 +21,18 @@ const Budget= () => {
 
         //if Validation is OK
         setError(false);
+        setBudget(amount);
+        setRemaining(amount);
     }
 
 
     return ( 
         <>
             <h2>What's your Budget For This Week?</h2>
-            {error ? <Error/> : null}
+            {error ? <Error message='We Really Hope You Have More Than this'/> : null}
 
             <form
-                onSubmit={addBudget}
+                
             >
                 
                 <input 
@@ -40,9 +42,10 @@ const Budget= () => {
                     onChange={e => {setAmount(parseInt(e.target.value),10);}}
                 />
 
-                <input type="submit"
+                <input type="button"
                     className='button-primary u-full-width'
                     value='Add Budget'
+                    onClick={addBudget}
                 />
 
             </form>
