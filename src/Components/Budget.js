@@ -54,8 +54,7 @@ const Budget= ({ setBudget, setRemaining, setShow}) => {
                     type='number'
                     className='u-full-width'
                     placeholder="Write a Cool Number Please💸"
-                    value={state.amount}
-                    onChange={e => dispatch({type:'amount', payload:e.target.value})}
+                    onChange={e => dispatch({type:'amount', payload:parseInt(e.target.value)})}
                 />
 
                 <input type="button"

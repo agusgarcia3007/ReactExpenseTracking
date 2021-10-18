@@ -23,11 +23,18 @@ const Form = () => {
 
     const [state, dispatch] = useReducer(formReducer, initialState);
 
+    //when the user add an expense
+    const addExpense = e => {
+        e.preventDefault();
+
+        
+    }
+
     return(
     <form
-        
+        onSubmit={addExpense}
     >
-        <h2>Your Expenses Go Here</h2>
+        <h2>Did you spend some money?</h2>
         <div className="field">
             <label>Expense</label>
             <input type="text"
@@ -44,9 +51,7 @@ const Form = () => {
             <input type="number"
             className='u-full-width'
             placeholder='$10'
-            // name='price'
-            value={state.price}
-            onChange={e => dispatch({type:'price', payload:e.target.value})}
+            onChange={e => dispatch({type:'price', payload:parseInt(e.target.value)})}
             />
         </div>
 
