@@ -1,12 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useReducer } from 'react'
 import Error from './Error';
 
 
-const Budget= ({ setBudget, setRemaining}) => {
+const Budget= ({ setBudget, setRemaining, setShow}) => {
 
-    const [amount, setAmount] = useState(0);
+    const initialState = {
+        amount:0,
+        error:false
+    }
+
+    // const [amount, setAmount] = useState(0);
     const [error, setError] = useState(false)
 
+    const formReducer = (state, {type, payload})=>{
+        switch(type){
+            case 'amount' :
+                return{...state, amount: payload}
+            default:
+                throw new Error();
+        }
+    }
+    const [state, dispatch] = useReducer(formReducer, initialState);
 
     //add Budget
     const addBudget = e => {
@@ -14,15 +28,16 @@ const Budget= ({ setBudget, setRemaining}) => {
 
 
         //Validation
-        if(amount < 1 || isNaN(amount)){
+        if(state.amount < 1 || isNaN(state.amount)){
             setError(true);
             return;
         }
 
         //if Validation is OK
         setError(false);
-        setBudget(amount);
-        setRemaining(amount);
+        setBudget(state.amount);
+        setRemaining(state.amount);
+        setShow(false);
     }
 
 
@@ -39,7 +54,8 @@ const Budget= ({ setBudget, setRemaining}) => {
                     type='number'
                     className='u-full-width'
                     placeholder="Write a Cool Number Please💸"
-                    onChange={e => {setAmount(parseInt(e.target.value),10);}}
+                    value={state.amount}
+                    onChange={e => dispatch({type:'amount', payload:e.target.value})}
                 />
 
                 <input type="button"

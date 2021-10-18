@@ -12,10 +12,10 @@ body {
 header {
   margin: 30px 0;
 }
-.contenido {
+.content {
   padding:20px;
 }
-.contenido-principal {
+.mainContent {
   background-color: #f8f9fa;
   padding: 30px;
   border-radius: 20px;
@@ -34,7 +34,6 @@ header {
 h1 {
   font-family: 'Raleway', sans-serif;
   font-weight: 1000;
-  /* -webkit-text-stroke: 1.5px black; */
   color: #212529;
   text-align: center;
   font-size: 4.8rem!important;
