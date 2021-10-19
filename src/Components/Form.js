@@ -1,32 +1,16 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import Error from './Error';
 import shortid from 'shortid';
 
-const Form = () => {
+const Form = ({addNewExpense}) => {
 
-     
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('')
     const [error, setError] = useState(false);
-
-    const formReducer = (state, {type, payload})=>{
-        switch(type){
-            case 'Expense' :
-                return{...state, Expense: payload}
-            case 'price':
-                return{...state, price: payload}
-            case 'id':
-                return{...state, id : payload}
-            default:
-                throw new Error();
-        }
-    }
+   
 
     
-    const [state, dispatch] = useReducer(formReducer, {
-        Expense : '',
-        price:0,
-        id:shortid.generate()
-    });
-    
+
    
     
 
@@ -35,15 +19,22 @@ const Form = () => {
         e.preventDefault();
 
         //validation
-        if(state.price < 1 || isNaN(state.price) || state.Expense.trim() === ''){
+        if(price <1 ||isNaN(price) || description.trim()===''){
             setError(true);
             return;
         }
-        setError(false);
-
         //add an expense
+        const expense = {
+            description,
+            price,
+            id:shortid.generate()
+        }
+        addNewExpense(expense);
+
+        //reset the form
+        setDescription('');
+        setPrice('')
         
-        console.log(state);
 
     }
 
@@ -60,9 +51,8 @@ const Form = () => {
             <input type="text"
             className='u-full-width'
             placeholder='e.g Food'
-            // name='expense'
-            value={state.Expense}
-            onChange={e=> dispatch({type: 'Expense', payload:e.target.value})}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             />
         </div>
 
@@ -71,7 +61,8 @@ const Form = () => {
             <input type="number"
             className='u-full-width'
             placeholder='$10'
-            onChange={e => dispatch({type:'price', payload:parseInt(e.target.value)})}
+            value={price}
+            onChange={(e) => setPrice(parseInt(e.target.value))}
             />
         </div>
 
