@@ -1,24 +1,47 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Budget from './Components/Budget';
 import Form from './Components/Form';
+import List from './Components/List';
+import BudgetControl from './Components/BudgetControl';
 
 
 const App = () => {
 
 
-  const [budget, setBudget] = useState(0);
-  const [remaining, setRemaining] = useState(0);
-  const [show, setShow] = useState(true);
+  const [budgets, setBudgets] = useState({
+    budget:0,
+    remaining:0,
+    showInput:true,
+  })
   const [expenses, setExpenses] = useState([]);
+  const [expense, setExpense] = useState({});
+  const [createExpense, setCreateExpense]=useState(false)
 
 
-  //add a new expense 
-  const addNewExpense = expense => {
-    setExpenses([
-      ...expenses,
-      expense
-    ])
-  }
+  const {budget, remaining, showInput} = budgets;
+
+  //useEffect to update the remaining
+  useEffect(() => {
+
+    //set the new expense
+      if(createExpense){
+        setExpenses([
+          ...expenses,
+          expense
+      ])
+
+      //remaining budget
+      const remainingBudget = remaining - expense.price;
+      setBudgets({
+        budget,
+        remaining:(remainingBudget)
+      });
+
+      setCreateExpense(false)
+      }
+
+      
+  }, [expense, remaining, createExpense, budget, expenses])
 
   return ( 
     <div className="container">
@@ -27,24 +50,30 @@ const App = () => {
         <h1>Weekly Expense Tracker</h1>
 
         {
-          show ? 
+          showInput ? 
           (
           <Budget 
-            setBudget={setBudget}
-            setRemaining={setRemaining}
-            setShow={setShow}
+            setBudgets={setBudgets}
             />
           )  :  (
           <div className="row">
 
             <div className="one-half column">
               <Form 
-                addNewExpense={addNewExpense}
+                setExpense={setExpense}
+                setCreateExpense={setCreateExpense}
               />
             </div>
 
             <div className="one-half column">
-              2
+              <List 
+                expenses={expenses}
+              />
+              
+              <BudgetControl 
+                budget={budget}
+                remaining={remaining}
+              />
             </div>
 
           </div>
