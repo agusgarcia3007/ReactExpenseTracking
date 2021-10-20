@@ -7,7 +7,11 @@ import BudgetControl from './Components/BudgetControl';
 
 const App = () => {
 
-
+  let initialExpenses = JSON.parse(localStorage.getItem('expenses'));
+    if(!initialExpenses){
+      initialExpenses = [];
+    }
+  
   const [budgets, setBudgets] = useState({
     budget:0,
     remaining:0,
@@ -17,6 +21,12 @@ const App = () => {
   const [expense, setExpense] = useState({});
   const [createExpense, setCreateExpense]=useState(false)
 
+  useEffect(() => {
+    //save expense on localStorage
+    initialExpenses ?
+    localStorage.setItem('expenses', JSON.stringify(expenses)) :
+    localStorage.setItem('expenses', JSON.stringify([]));
+  },[expenses, initialExpenses]);
 
   const {budget, remaining, showInput} = budgets;
 
